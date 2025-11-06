@@ -22,24 +22,7 @@ El script se ejecuta desde la raíz del proyecto.
 
 El proyecto sigue una estructura ETL clásica compuesta por tres etapas principales: Extract, Transform y Load.
 
-mkt_tp_final/
-│
-├── raw/                         # Datos originales del sistema OLTP
-│
-├── warehouse/
-│   ├── staging/                 # Datos intermedios (post extracción)
-│   ├── dim/                     # Tablas de dimensiones creadas
-│   ├── fact/                    # Tablas de hechos creadas
-│
-├── etl/
-│   ├── extract/                 # Lectura desde raw/
-│   ├── transform/               # Transformaciones y modelado
-│   └── load/                    # Carga final al DWH
-│
-├── tablas.py                    # Script principal de construcción de tablas DIM y FACT
-├── main.py                      # Ejecuta el pipeline completo de ETL
-├── requirements.txt
-└── README.md
+![Estructura de proyecto](<assets/Captura de pantalla 2025-11-05 235000.png>)
 
 ▶️ Instrucciones de Ejecución
 
@@ -225,16 +208,22 @@ comment	Comentario del cliente	TEXT
 Diagramas Star Schema
 Se crearon los Star Schema para cada tabla de hechos
 
+fact_ order_lines
 ![fact_order_lines](assets/fact_web_sessions.jpg)
 
+fact_orders
 ![fact_orders](aassets/fact_orders.jpg)
 
+fact_payments
 ![fact_payments](assets/Fact_payments.jpg)
 
+fact_shipments
 ![fact_shipments](assets/fact_shipments.jpg)
 
+fact_web_sessions
 ![fact_web_sessions](assets/fact_web_sessions.jpg)
 
+fact_nps
 ![fact_nps](assets/fact_nps.jpg)
 
 

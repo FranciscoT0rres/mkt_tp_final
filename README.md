@@ -57,7 +57,7 @@ El Data Warehouse está compuesto por 6 dimensiones y 6 tablas de hechos, siguie
 
 🧱 DIMENSIONES
 
-🧩 dim_customers.parquet
+🧩 dim_customers.csv
 
 Contiene información de los clientes.
 
@@ -70,7 +70,7 @@ email	Correo electrónico	VARCHAR
 phone	Teléfono	VARCHAR
 created_at	Fecha de alta del cliente	TIMESTAMP
 
-🧩 dim_products.parquet
+🧩 dim_products.csv
 
 Información de productos y su categoría.
 
@@ -83,7 +83,7 @@ price	Precio unitario	DECIMAL
 category_id	ID de categoría	INT
 created_at	Fecha de alta del producto	TIMESTAMP
 
-🧩 dim_stores.parquet
+🧩 dim_stores.csv
 
 Información de las tiendas físicas o canales de venta.
 
@@ -94,7 +94,7 @@ name	Nombre de la tienda o canal	VARCHAR
 type	Tipo de tienda (online / física)	VARCHAR
 region	Región o zona geográfica	VARCHAR
 
-🧩 dim_date.parquet
+🧩 dim_date.csv
 
 Dimensión temporal utilizada para análisis por día.
 
@@ -107,7 +107,7 @@ month	Mes	INT
 year	Año	INT
 weekday	Día de la semana (0=Monday)	INT
 
-🧩 dim_product_category.parquet
+🧩 dim_product_category.csv
 
 Categorías de los productos.
 
@@ -118,7 +118,7 @@ category_name	Nombre de la categoría	VARCHAR
 
 📊 TABLAS DE HECHOS
 
-💰 fact_order_lines.parquet
+💰 fact_order_lines.csv
 
 Registra el detalle de cada línea de pedido.
 
@@ -134,8 +134,7 @@ quantity	Cantidad	INT
 unit_price	Precio unitario	DECIMAL
 line_total	Total de la línea (cantidad × precio)	DECIMAL
 
-🧾 fact_orders.parquet
-
+🧾 fact_orders.csv
 Registra información a nivel de orden completa.
 
 Grano: una orden de venta.
@@ -151,7 +150,7 @@ tax_amount	Impuestos aplicados	DECIMAL
 shipping_fee	Costo de envío	DECIMAL
 total_amount	Total final	DECIMAL
 
-💳 fact_payments.parquet
+💳 fact_payments.csv
 
 Registra los pagos asociados a las órdenes.
 
@@ -165,7 +164,7 @@ amount	Monto del pago	DECIMAL
 status	Estado del pago	VARCHAR
 payment_method	Método de pago	VARCHAR
 
-📦 fact_shipments.parquet
+📦 fact_shipments.csv
 
 Registra los envíos de los pedidos.
 
@@ -179,7 +178,7 @@ carrier	Empresa de transporte	VARCHAR
 status	Estado del envío	VARCHAR
 tracking_number	Número de seguimiento	VARCHAR
 
-🌐 fact_web_sessions.parquet
+🌐 fact_web_sessions.csv
 
 Registra las sesiones de usuarios en la web.
 
@@ -192,7 +191,7 @@ session_date_sk	Fecha de la sesión (FK a dim_date)	INT
 page_views	Páginas vistas	INT
 duration_seconds	Duración en segundos	INT
 
-⭐ fact_nps.parquet
+⭐ fact_nps.csv
 
 Registra las respuestas de encuestas de satisfacción (NPS).
 

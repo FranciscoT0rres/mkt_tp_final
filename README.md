@@ -20,9 +20,18 @@ El script se ejecuta desde la raíz del proyecto.
 
 🏗️ Estructura del Proyecto
 
-El proyecto sigue una estructura ETL clásica compuesta por tres etapas principales: Extract, Transform y Load.
+El proyecto sigue una estructura ETL clásica:
 
-![Estructura de proyecto](<assets/Captura de pantalla 2025-11-05 235000.png>)
+raw/: Contiene los archivos de la OLTP.
+etl/: Contiene los scripts del proceso de ETL, seprarada en:
+    etl/extract/: Contiene el script para leer los datos desde raw/.
+    etl/transform/: Contiene los scripts para desnormalizar la OLTP en DIM y FACT tables.
+    etl/load/: Contiene el script de pipeline para guardar las DIM y FACT tables.
+main.py: El script principal que ejecuta el pipeline.
+werehouse/: Contiene los archivos creados para el OLAP, se divide en:
+    werehouse/dim/: Contiene las tablas de dimensiones.
+    werehouse/fact/: Contiene las tablas de hechos.
+
 
 ▶️ Instrucciones de Ejecución
 

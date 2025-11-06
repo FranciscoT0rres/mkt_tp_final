@@ -4,3 +4,245 @@ Repositorio del trabajo práctico final de la materia.
 
 **Consigna y documento principal:** [Trabajo Práctico Final](https://docs.google.com/document/d/15RNP3FVqLjO4jzh80AAkK6mUR5DOLqPxLjQxqvdzrYg/edit?usp=sharing)
 **Diagrama Entidad Relación:** [DER](./assets/DER.png)
+
+📘 README — Proyecto de Data Warehouse (ETL en Python)
+🧩 Supuestos
+
+El proyecto fue desarrollado bajo los siguientes supuestos:
+
+⚙️ Entorno de Ejecución
+
+Python 3.10 o superior.
+
+Todas las librerías necesarias están instaladas (pandas, pyarrow, etc.).
+
+El script se ejecuta desde la raíz del proyecto.
+
+🏗️ Estructura del Proyecto
+
+El proyecto sigue una estructura ETL clásica compuesta por tres etapas principales: Extract, Transform y Load.
+
+mkt_tp_final/
+│
+├── raw/                         # Datos originales del sistema OLTP
+│
+├── warehouse/
+│   ├── staging/                 # Datos intermedios (post extracción)
+│   ├── dim/                     # Tablas de dimensiones creadas
+│   ├── fact/                    # Tablas de hechos creadas
+│
+├── etl/
+│   ├── extract/                 # Lectura desde raw/
+│   ├── transform/               # Transformaciones y modelado
+│   └── load/                    # Carga final al DWH
+│
+├── tablas.py                    # Script principal de construcción de tablas DIM y FACT
+├── main.py                      # Ejecuta el pipeline completo de ETL
+├── requirements.txt
+└── README.md
+
+▶️ Instrucciones de Ejecución
+
+Siga los siguientes pasos para ejecutar el pipeline ETL localmente:
+
+1️⃣ Clonar el repositorio:
+git clone https://github.com/FranciscoT0rres/mkt_tp_final.git
+cd mkt_tp_final
+
+2️⃣ Crear y activar un entorno virtual:
+
+En macOS/Linux
+
+python -m venv .venv
+source .venv/bin/activate
+
+
+En Windows
+
+python -m venv .venv
+.\.venv\Scripts\activate
+
+3️⃣ Instalar dependencias:
+pip install -r requirements.txt
+
+4️⃣ Ejecutar el pipeline ETL:
+python main.py
+
+🗃️ Diccionario de Datos — Data Warehouse
+
+El Data Warehouse está compuesto por 6 dimensiones y 6 tablas de hechos, siguiendo un modelo de esquema estrella (Star Schema).
+
+🧱 DIMENSIONES
+
+🧩 dim_customers.parquet
+
+Contiene información de los clientes.
+
+Columna	Descripción	Tipo de dato
+customer_sk	Clave subrogada (PK)	INT
+customer_id	Identificador original del cliente	INT
+first_name	Nombre del cliente	VARCHAR
+last_name	Apellido del cliente	VARCHAR
+email	Correo electrónico	VARCHAR
+phone	Teléfono	VARCHAR
+created_at	Fecha de alta del cliente	TIMESTAMP
+
+🧩 dim_products.parquet
+
+Información de productos y su categoría.
+
+Columna	Descripción	Tipo de dato
+product_sk	Clave subrogada (PK)	INT
+product_id	ID original del producto	INT
+name	Nombre del producto	VARCHAR
+sku	Código SKU del producto	VARCHAR
+price	Precio unitario	DECIMAL
+category_id	ID de categoría	INT
+created_at	Fecha de alta del producto	TIMESTAMP
+
+🧩 dim_stores.parquet
+
+Información de las tiendas físicas o canales de venta.
+
+Columna	Descripción	Tipo de dato
+store_sk	Clave subrogada (PK)	INT
+store_id	Identificador original de la tienda	INT
+name	Nombre de la tienda o canal	VARCHAR
+type	Tipo de tienda (online / física)	VARCHAR
+region	Región o zona geográfica	VARCHAR
+
+🧩 dim_date.parquet
+
+Dimensión temporal utilizada para análisis por día.
+
+Columna	Descripción	Tipo de dato
+date_sk	Clave subrogada (PK)	INT
+date_id	Fecha numérica (AAAAMMDD)	INT
+date	Fecha completa	DATE
+day	Día del mes	INT
+month	Mes	INT
+year	Año	INT
+weekday	Día de la semana (0=Monday)	INT
+
+🧩 dim_product_category.parquet
+
+Categorías de los productos.
+
+Columna	Descripción	Tipo de dato
+product_category_sk	Clave subrogada (PK)	INT
+category_id	ID original de categoría	INT
+category_name	Nombre de la categoría	VARCHAR
+
+📊 TABLAS DE HECHOS
+
+💰 fact_order_lines.parquet
+
+Registra el detalle de cada línea de pedido.
+
+Grano: una línea de producto en una orden.
+
+Columna	Descripción	Tipo de dato
+order_id	Identificador de la orden	INT
+order_date_sk	Fecha del pedido (FK a dim_date)	INT
+customer_sk	Cliente (FK a dim_customers)	INT
+product_sk	Producto (FK a dim_products)	INT
+store_sk	Tienda (FK a dim_stores)	INT
+quantity	Cantidad	INT
+unit_price	Precio unitario	DECIMAL
+line_total	Total de la línea (cantidad × precio)	DECIMAL
+
+🧾 fact_orders.parquet
+
+Registra información a nivel de orden completa.
+
+Grano: una orden de venta.
+
+Columna	Descripción	Tipo de dato
+order_id	Identificador de la orden (PK)	INT
+order_date_sk	Fecha del pedido (FK a dim_date)	INT
+customer_sk	Cliente (FK a dim_customers)	INT
+store_sk	Tienda (FK a dim_stores)	INT
+status	Estado de la orden	VARCHAR
+subtotal	Subtotal de la orden	DECIMAL
+tax_amount	Impuestos aplicados	DECIMAL
+shipping_fee	Costo de envío	DECIMAL
+total_amount	Total final	DECIMAL
+
+💳 fact_payments.parquet
+
+Registra los pagos asociados a las órdenes.
+
+Grano: un pago realizado por un cliente.
+
+Columna	Descripción	Tipo de dato
+payment_id	Identificador del pago (PK)	INT
+order_id	Orden asociada	INT
+payment_date_sk	Fecha del pago (FK a dim_date)	INT
+amount	Monto del pago	DECIMAL
+status	Estado del pago	VARCHAR
+payment_method	Método de pago	VARCHAR
+
+📦 fact_shipments.parquet
+
+Registra los envíos de los pedidos.
+
+Grano: un envío realizado.
+
+Columna	Descripción	Tipo de dato
+shipment_id	Identificador del envío (PK)	INT
+order_id	Orden asociada	INT
+shipped_date_sk	Fecha de envío (FK a dim_date)	INT
+carrier	Empresa de transporte	VARCHAR
+status	Estado del envío	VARCHAR
+tracking_number	Número de seguimiento	VARCHAR
+
+🌐 fact_web_sessions.parquet
+
+Registra las sesiones de usuarios en la web.
+
+Grano: una sesión iniciada por un cliente.
+
+Columna	Descripción	Tipo de dato
+session_id	Identificador de la sesión (PK)	INT
+customer_id	Cliente (FK a dim_customers)	INT
+session_date_sk	Fecha de la sesión (FK a dim_date)	INT
+page_views	Páginas vistas	INT
+duration_seconds	Duración en segundos	INT
+
+⭐ fact_nps.parquet
+
+Registra las respuestas de encuestas de satisfacción (NPS).
+
+Grano: una respuesta por cliente.
+
+Columna	Descripción	Tipo de dato
+nps_id	Identificador de la respuesta (PK)	INT
+customer_id	Cliente (FK a dim_customers)	INT
+response_date_sk	Fecha de respuesta (FK a dim_date)	INT
+score	Puntuación (0–10)	SMALLINT
+comment	Comentario del cliente	TEXT
+
+Diagramas Star Schema
+Se crearon los Star Schema para cada tabla de hechos
+
+![fact_order_lines](assets/fact_web_sessions.jpg)
+
+![fact_orders](aassets/fact_orders.jpg)
+
+![fact_payments](assets/Fact_payments.jpg)
+
+![fact_shipments](assets/fact_shipments.jpg)
+
+![fact_web_sessions](assets/fact_web_sessions.jpg)
+
+![fact_nps](assets/fact_nps.jpg)
+
+
+📈 Modelo Estrella — Resumen
+FACT TABLE	DIMENSIONES RELACIONADAS
+fact_order_lines	dim_customers, dim_products, dim_stores, dim_date, dim_orders
+fact_orders	dim_customers, dim_stores, dim_date
+fact_payments	dim_date, dim_customers
+fact_shipments	dim_date, dim_address
+fact_web_sessions	dim_customers, dim_date
+fact_nps	dim_customers, dim_date

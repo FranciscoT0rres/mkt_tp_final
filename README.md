@@ -209,21 +209,27 @@ Diagramas Star Schema
 Se crearon los Star Schema para cada tabla de hechos
 
 fact_ order_lines
+
 ![fact_order_lines](assets/fact_web_sessions.jpg)
 
 fact_orders
-![fact_orders](aassets/fact_orders.jpg)
+
+![fact_orders](assets/fact_orders.jpg)
 
 fact_payments
+
 ![fact_payments](assets/Fact_payments.jpg)
 
 fact_shipments
+
 ![fact_shipments](assets/fact_shipments.jpg)
 
 fact_web_sessions
+
 ![fact_web_sessions](assets/fact_web_sessions.jpg)
 
 fact_nps
+
 ![fact_nps](assets/fact_nps.jpg)
 
 

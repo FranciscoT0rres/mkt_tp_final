@@ -32,32 +32,43 @@ El proyecto sigue una estructura ETL clásica:
     * `werehouse/dim/`: Contiene las tablas de dimensiones.
     * `werehouse/fact/`: Contiene las tablas de hechos.
 
-▶️ Instrucciones de Ejecución
 
-Siga los siguientes pasos para ejecutar el pipeline ETL localmente:
+## 🚀 Instrucciones de Ejecución
 
-1️⃣ Clonar el repositorio:
-git clone https://github.com/FranciscoT0rres/mkt_tp_final.git
-cd mkt_tp_final
+Siga estos pasos para ejecutar el pipeline de ETL localmente:
 
-2️⃣ Crear y activar un entorno virtual:
+1.  **Clonar el repositorio:**
 
-En macOS/Linux
+    ```bash
+    git clone https://github.com/SantinoMalatini/mkt_tp_final.git
+    cd mkt_tp_final
+    ```
 
-python -m venv .venv
-source .venv/bin/activate
+2.  **Crear y Activar un Entorno Virtual (ENV):**
 
+    * **En macOS/Linux:**
+        ```bash
+        python -m venv .venv
+        source .venv/bin/activate
+        ```
 
-En Windows
+    * **En Windows (PowerShell/CMD):**
+        ```powershell
+        python -m venv .venv
+        .\.venv\Scripts\activate
+        ```
 
-python -m venv .venv
-.\.venv\Scripts\activate
+3.  **Instalar Dependencias:**
 
-3️⃣ Instalar dependencias:
-pip install -r requirements.txt
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-4️⃣ Ejecutar el pipeline ETL:
-python main.py
+4.  **Ejecutar el pipeline ETL:**
+
+    ```bash
+    python main.py
+    ```
 
 🗃️ Diccionario de Datos — Data Warehouse
 
@@ -284,6 +295,6 @@ Esta tabla resume las relaciones entre las tablas de hechos (Facts) y las tablas
 | `fact_order_lines` | `dim_customers`, `dim_products`, `dim_stores`, `dim_date`, `dim_orders` |
 | `fact_orders` | `dim_customers`, `dim_stores`, `dim_date` |
 | `fact_payments` | `dim_date`, `dim_customers` |
-| `fact_shipments` | `dim_date`, `dim_address` |
+| `fact_shipments` | `dim_date` |
 | `fact_web_sessions` | `dim_customers`, `dim_date` |
 | `fact_nps` | `dim_customers`, `dim_date` |
